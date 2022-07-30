@@ -1,0 +1,13 @@
+<div style="direction: ltr;font-family:Georgia;margin:20px;max-height:100px;max-width: 72%;color:#ffffffd6;font-weight:bold;opacity:0.9;text-align: center;">
+    <div style="display: flex;justify-content: center;align-items: center;width: 100%;background: linear-gradient(#ff0023, #2e2a20);">
+        <div  style="width: 60px;height: 70px;margin: 10px;z-index: 10000">
+            <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-error-security-flaticons-flat-flat-icons.png"/>
+        </div>
+        <div class="error_message">
+            <p  style="margin: 10px;z-index: 10000 ;font-size: small;margin: 10px">Block From User {USERFROMBLOCK}</p>
+            <p style="margin: 10px;z-index: 10000;font-size: small;margin: 10px">your {USERTOBLOCK} Take Block In {USERFROMBLOCK} ^_^ </p>
+            <p style="margin: 10px;z-index: 10000;font-size: small;margin: 10px">Life Is Not Worth Anger, Don't Worry Dear</p>
+        </div>
+    </div>
+</div>
+<br>

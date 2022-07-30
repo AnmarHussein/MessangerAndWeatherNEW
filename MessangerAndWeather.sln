@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessangerAndWeather", "MessangerAndWeather\MessangerAndWeather.csproj", "{9CDF6F38-027E-4DC1-849C-D0E0CDBB6B11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "infra", "infra\infra.csproj", "{A41CA5A4-8C1E-4D05-9068-79927D562EDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{CC2DC231-067F-44F9-BEFB-44D2C7DAA9BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CDF6F38-027E-4DC1-849C-D0E0CDBB6B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDF6F38-027E-4DC1-849C-D0E0CDBB6B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDF6F38-027E-4DC1-849C-D0E0CDBB6B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDF6F38-027E-4DC1-849C-D0E0CDBB6B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A41CA5A4-8C1E-4D05-9068-79927D562EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A41CA5A4-8C1E-4D05-9068-79927D562EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A41CA5A4-8C1E-4D05-9068-79927D562EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A41CA5A4-8C1E-4D05-9068-79927D562EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2DC231-067F-44F9-BEFB-44D2C7DAA9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2DC231-067F-44F9-BEFB-44D2C7DAA9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2DC231-067F-44F9-BEFB-44D2C7DAA9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2DC231-067F-44F9-BEFB-44D2C7DAA9BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D7D3F0F-0236-4427-A393-D19F92C6829A}
+	EndGlobalSection
+EndGlobal

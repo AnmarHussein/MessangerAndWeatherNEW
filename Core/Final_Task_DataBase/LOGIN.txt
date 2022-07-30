@@ -1,0 +1,20 @@
+
+CREATE OR REPLACE PACKAGE LOGIN_PACKAGE as
+    procedure Auth (username1 in varchar,password1 in varchar);
+END LOGIN_PACKAGE;
+
+
+CREATE OR REPLACE PACKAGE BODY LOGIN_PACKAGE as
+    procedure Auth (username1 in varchar,password1 in varchar) as
+        c_all SYS_REFCURSOR;
+    BEGIN
+        OPEN c_all  FOR
+        select u.id,u.username,u.password ,r.name as roleName from user1 u inner join role r on r.id = u.roleid
+        where username=username1 and password=password1;
+        DBMS_SQL.RETURN_RESULT(c_all);
+    end Auth;
+END LOGIN_PACKAGE;
+
+begin
+    LOGIN_PACKAGE.Auth('1anmar',1234567);
+end;

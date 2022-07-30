@@ -1,0 +1,194 @@
+
+
+CREATE OR REPLACE PACKAGE  OTHERS_PACKAGE AS
+
+    /* THIS TABLE ServiceItem*/ 
+    PROCEDURE ServiceItem_GetSealesYear;
+    
+    /* This Table Posts*/
+    PROCEDURE POST_GETLIKEALL;
+    
+    PROCEDURE POST_GETUSERPOSTS;
+    
+    /*This Table User1*/
+        
+    PROCEDURE User1_GetALLCityNumberUSer1;
+    
+    PROCEDURE User1_GetTotalVisaEachUser1;
+    
+    /*This Table Frind*/
+    PROCEDURE GetAllRequesFrindByUser(P_USER_ID IN NUMBER);
+    
+    PROCEDURE ApprovedFrindReguest(P_ID IN NUMBER);
+    
+    PROCEDURE BlockFrind(P_ID IN NUMBER);
+    
+    PROCEDURE GetEmailBlockFrind(P_ID IN NUMBER);
+    
+    PROCEDURE GetAllFrindByUser(P_USER_ID IN NUMBER);
+    
+    /* Select All Message And  group and user*/
+    
+    PROCEDURE GetAllMessageByGroubUser1;
+    PROCEDURE GetAllMessageCountbyAllUser;
+    PROCEDURE GetAllMessageCountbyAllGroup;
+    PROCEDURE GetAllMessagebyUser(P_USERNAME IN VARCHAR);  
+End OTHERS_PACKAGE;
+
+
+
+CREATE OR REPLACE PACKAGE BODY OTHERS_PACKAGE AS
+    
+    /* THIS TABLE ServiceItem*/
+    PROCEDURE ServiceItem_GetSealesYear IS
+        serve_all SYS_REFCURSOR;
+    Begin
+        OPEN serve_all FOR
+            SELECT TO_CHAR(si.createat , 'yy') Year,COUNT(SI.ID) AS COUNTSEALES,SUM(SB.PRICE) AS SUMPRICE FROM SERVICEITEM SI
+            INNER JOIN SERVICEBUY SB ON SB.ID = si.servbuy_id
+            GROUP BY TO_CHAR(si.createat , 'yy')
+            ORDER BY TO_CHAR(si.createat , 'yy') DESC;
+        dbms_sql.return_result(serve_all);
+    End ServiceItem_GetSealesYear;
+
+    /* This Table Posts*/
+    PROCEDURE POST_GETLIKEALL IS 
+        LIKEINPOST_all SYS_REFCURSOR;
+    BEGIN
+        OPEN LIKEINPOST_all FOR 
+            Select P.TITLE, Count(P.ID) AS COUNTLIKE From Like1 L
+            INNER JOIN POST P ON P.ID = L.POST_ID
+            GROUP BY P.TITLE , P.ID;
+        dbms_sql.return_result(LIKEINPOST_all);
+    END POST_GETLIKEALL;
+    
+    
+    PROCEDURE POST_GETUSERPOSTS IS 
+        USERINPOST_all SYS_REFCURSOR;
+    BEGIN
+        OPEN USERINPOST_all FOR 
+            select U.UserNAme , count(U.UserNAme) AS COUNTNAME from Post p
+            INNER JOIN USER1 U ON U.ID = P.USER_ID
+            GROUP BY U.UserNAme;
+        dbms_sql.return_result(USERINPOST_all);
+    END POST_GETUSERPOSTS;
+    
+    PROCEDURE User1_GetALLCityNumberUSer1 IS
+        user1_city SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_city FOR SELECT City , Count(ID) as USERCOUNT FROM USER1 GROUP by City;
+            dbms_sql.return_result(user1_city);
+    END User1_GetALLCityNumberUSer1;
+    
+    
+    PROCEDURE  User1_GetTotalVisaEachUser1 IS
+        user1_city SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_city FOR 
+        SELECT u.username ,SUM(SB.PRICE) As Total  FROM SERVICEITEM SI
+        INNER JOIN SERVICEBUY SB ON SB.ID = si.servbuy_id
+        INNER JOIN visacard V ON V.ID = SI.VISA_ID
+        INNER JOIN USER1 U ON U.ID =v.user_id
+        GROUP BY  u.username; 
+        dbms_sql.return_result(user1_city);
+        
+    END User1_GetTotalVisaEachUser1;
+    
+    PROCEDURE GetAllRequesFrindByUser(P_USER_ID IN NUMBER) IS
+        request_all SYS_REFCURSOR;
+    BEGIN
+        Open request_all For 
+            Select f.id, f.approved,f.CreateAt , u.fullname as fromName ,r.fullname as ToNAme From Friend f
+            Inner Join user1 u on u.id = f.fromuser 
+            Inner Join user1 r on r.id = f.touser
+            Where f.approved = 0 and f.blockuser = 0 and r.id = P_USER_ID ;
+            
+        dbms_sql.return_result(request_all);
+    END GetAllRequesFrindByUser;
+    
+    PROCEDURE ApprovedFrindReguest(P_ID IN NUMBER) IS
+    BEGIN
+        UPDATE FRIEND SET APPROVED = 1  WHERE ID = P_ID;
+        COMMIT; 
+    END ApprovedFrindReguest;
+    
+    PROCEDURE BlockFrind(P_ID IN NUMBER) IS
+    BEGIN
+        UPDATE FRIEND SET APPROVED = 0 , blockuser = 1  WHERE ID = P_ID;
+        COMMIT; 
+    END BlockFrind;
+
+    PROCEDURE GetEmailBlockFrind(P_ID IN NUMBER)IS
+        request_all SYS_REFCURSOR;
+    BEGIN
+        Open request_all For 
+            Select f.id, f.approved,f.CreateAt , u.FullNAme as fromName ,u.email as fromEmail 
+            , r.fullname as ToName, r.Email as ToEmail  From Friend f
+            Inner Join user1 u on u.id = f.fromuser 
+            Inner Join user1 r on r.id = f.touser
+            Where f.blockuser = 0 and f.ID = P_ID;
+            
+        dbms_sql.return_result(request_all);
+    END GetEmailBlockFrind;
+
+    PROCEDURE GetAllFrindByUser(P_USER_ID IN NUMBER) IS
+        request_all SYS_REFCURSOR;
+    BEGIN
+        Open request_all For 
+            Select f.id, f.approved,f.CreateAt , u.fullname as fromName ,r.fullname as ToNAme From Friend f
+            Inner Join user1 u on u.id = f.fromuser 
+            Inner Join user1 r on r.id = f.touser
+            Where f.approved = 1 and f.blockuser = 0 and r.id = P_USER_ID or f.approved = 1 and f.blockuser = 0 and  u.id = P_USER_ID;
+            
+        dbms_sql.return_result(request_all);
+    END GetAllFrindByUser;
+    
+    PROCEDURE  GetAllMessageByGroubUser1 IS
+        user1_message SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_message FOR 
+        SELECT M.CONTENT1 , U.FULLNAME ,G.NAME FROM MESSAGE M 
+        INNER JOIN GROUP1 G ON G.ID = m.groupid
+        INNER JOIN USER1 U ON U.ID = M.USERID
+        ORDER BY G.ID ; 
+        dbms_sql.return_result(user1_message);
+        
+    END GetAllMessageByGroubUser1;
+    
+    PROCEDURE  GetAllMessageCountbyAllUser IS
+        user1_message SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_message FOR 
+        SELECT U.USERNAME,COUNT(U.USERNAME) AS COUNT FROM MESSAGE M 
+        INNER JOIN USER1 U ON U.ID = M.USERID
+        GROUP BY U.USERNAME;
+        dbms_sql.return_result(user1_message);
+        
+    END GetAllMessageCountbyAllUser;
+    
+    PROCEDURE  GetAllMessageCountbyAllGroup IS
+        user1_message SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_message FOR 
+        SELECT G.NAME,COUNT(G.NAME) AS COUNT FROM MESSAGE M 
+        INNER JOIN GROUP1 G ON G.ID = M.GROUPID
+        GROUP BY G.NAME;
+        dbms_sql.return_result(user1_message);
+        
+    END GetAllMessageCountbyAllGroup;
+    
+    PROCEDURE  GetAllMessagebyUser(P_USERNAME IN VARCHAR) IS
+        user1_message SYS_REFCURSOR;
+    BEGIN
+        OPEN user1_message FOR 
+        SELECT M.CONTENT1, m.createat ,G.NAME FROM MESSAGE M 
+        INNER JOIN USER1 U ON U.ID = M.USERID
+        INNER JOIN GROUP1 G ON G.ID = M.GROUPID
+        WHERE U.USERNAME =  P_USERNAME;
+
+        dbms_sql.return_result(user1_message);
+        
+    END GetAllMessagebyUser;
+    
+END OTHERS_PACKAGE;
+
